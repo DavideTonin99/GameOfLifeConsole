@@ -89,10 +89,8 @@ public class Board {
                     if(matrix[neighbors[_row][0]][neighbors[_row][1]].isAlive()){
                         nAliveNeighbors ++;
                         }
-                    //System.out.print(neighbors[_row][0] + ";" + neighbors[_row][1] + "\n");
                 }
                 catch(Exception e) {
-                    //System.out.print("Fuori board: " + neighbors[_row][0] + ";" + neighbors[_row][1] + "\n");
                 }
             }
         }
