@@ -116,7 +116,6 @@ public class Board {
         for(int row=0; row<rows;row++){
             for(int col=0; col<columns;col++){
                 neighbors = countNeighbors(row, col);
-                //System.out.println(row + ";" + col + "; " + neighbors);
                 if(neighbors < 2 || neighbors > 3){
                     nextMatrix[row][col].setAlive(false);
                 }
