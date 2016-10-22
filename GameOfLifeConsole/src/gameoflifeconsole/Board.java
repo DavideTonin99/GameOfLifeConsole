@@ -106,13 +106,14 @@ public class Board {
         Cell[][] nextMatrix;
         nextMatrix = new Cell[rows][columns];
         
+        // creates new matrix equal to the first
         for(int row=0; row<rows;row++){
             for(int col=0;col<columns;col++){
                 nextMatrix[row][col] = new Cell(row, col);
                 nextMatrix[row][col].setAlive(matrix[row][col].isAlive()); 
             }
         }
-                    
+        
         for(int row=0; row<rows;row++){
             for(int col=0; col<columns;col++){
                 neighbors = countNeighbors(row, col);
@@ -124,8 +125,11 @@ public class Board {
                 }                
             }
         }
-        return nextMatrix;
+        
+        if(matrixesAreEqual(matrix, nextMatrix)) System.exit(0);
+        return nextMatrix;   
     }
+    
     /**
      * Update the board with transition
      * @param updateDelay time to wait for the next step of the game
@@ -140,6 +144,28 @@ public class Board {
                 }
     }
     /**
+     * Compares the current matrix with the next
+     * If the two matrices are the same, return True
+     * @param matrix the current matrix
+     * @param nextMatrix the next step matrix
+     * @return end end of the game
+     */
+    public boolean matrixesAreEqual(Cell[][] matrix, Cell[][] nextMatrix){
+        boolean end = true;
+        for(int row=0; row<rows;){
+            for(int col=0; col<columns;){
+                if(nextMatrix[row][col].isAlive() != matrix[row][col].isAlive()){
+                    end = false;
+                    row = rows;
+                    col = columns;
+                }
+                col++;
+            }
+            row++;
+        }
+        return end;
+    }
+    /**
      * Return the board
      * @return b
      */
@@ -148,7 +174,7 @@ public class Board {
         
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < columns; col++) {
-                b += (matrix[row][col].isAlive()) ? 1 : 0;
+                b += (matrix[row][col].isAlive()) ? "#" : "°";
                 b += " ";
             } 
             b += "\n";
