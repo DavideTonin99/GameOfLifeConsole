@@ -144,8 +144,8 @@ public class Board {
                 }
     }
     /**
-     * Compares the current matrix with the next
-     * If the two matrices are the same, return True
+     * Compares two matrixes
+     * If they are the same, return True
      * @param matrix the current matrix
      * @param nextMatrix the next step matrix
      * @return end end of the game
