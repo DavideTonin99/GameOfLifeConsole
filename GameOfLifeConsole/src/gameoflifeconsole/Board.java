@@ -19,7 +19,6 @@ public class Board {
         this.rows = rows;
         this.columns = columns;
         matrix = new Cell[rows][columns];
-        // x is the column, y is the row
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < columns; col++) {
                 matrix[row][col] = new Cell(row, col);
@@ -60,28 +59,18 @@ public class Board {
      * @param c the column of the cell
      * @return nAliveNeighbors the number of alive neighbors of the cell
      */
-    public int countNeighbors(int r, int c){
+    public int countNeighbors(int row, int col){
         int nAliveNeighbors = 0;
         int[][] neighbors = new int[8][2];
-        int row =r;
-        int col = c;
 
-        neighbors[0][0] = --row; neighbors[0][1] = --col; 
-        row = r; col = c;
-        neighbors[1][0] = --row; neighbors[1][1] = col; 
-        row = r; col = c;
-        neighbors[2][0] = --row; neighbors[2][1] = ++col; 
-        row = r; col = c; 
-        neighbors[3][0] = row; neighbors[3][1] = --col; 
-        row = r; col = c;
-        neighbors[4][0] = row; neighbors[4][1] = ++col; 
-        row = r; col = c;
-        neighbors[5][0] = ++row; neighbors[5][1] = --col; 
-        row = r; col = c;
-        neighbors[6][0] = ++row; neighbors[6][1] = col; 
-        row = r; col = c;
-        neighbors[7][0] = ++row; neighbors[7][1] = ++col; 
-        row = r; col = c;
+        neighbors[0][0] = row-1; neighbors[0][1] = col-1; 
+        neighbors[1][0] = row-1; neighbors[1][1] = col; 
+        neighbors[2][0] = row-1; neighbors[2][1] = col+1; 
+        neighbors[3][0] = row; neighbors[3][1] = col-1; 
+        neighbors[4][0] = row; neighbors[4][1] = col+1; 
+        neighbors[5][0] = row+1; neighbors[5][1] = col-1; 
+        neighbors[6][0] = row+1; neighbors[6][1] = col; 
+        neighbors[7][0] = row+1; neighbors[7][1] = col+1; 
         
         for(int _row=0; _row < neighbors.length; _row++){
             if(col >= 0 && col < columns && row >= 0 && row < rows){ 

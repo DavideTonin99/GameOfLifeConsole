@@ -10,11 +10,14 @@ public class GameOfLifeConsoleApp {
     
     public static void main(String[]args){
         int updateDelay = 300;
+        int rows = 10;
+        int columns = 40;
+        int numberOfAliveCells = 200;
         
-        Board board = new Board(10, 40);
+        Board board = new Board(rows, columns);
         System.out.println("New board: " + "\n" + board);
         
-        board.init(200);
+        board.init(numberOfAliveCells);
         System.out.println("Initialized board: " + "\n" + board);
         
         System.out.println("Game: ");
