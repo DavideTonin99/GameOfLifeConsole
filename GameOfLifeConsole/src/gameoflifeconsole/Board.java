@@ -55,36 +55,34 @@ public class Board {
     }
     /**
      * Count neighbors of a cell
-     * @param r the row of the cell
-     * @param c the column of the cell
-     * @return nAliveNeighbors the number of alive neighbors of the cell
+     * @param row the row of the cell
+     * @param col the column of the cell
+     * @return count the number of alive neighbors of the cell
      */
     public int countNeighbors(int row, int col){
-        int nAliveNeighbors = 0;
-        int[][] neighbors = new int[8][2];
+        int count = 0;
+        int[][] neighborsCoords = new int[8][2];
 
-        neighbors[0][0] = row-1; neighbors[0][1] = col-1; 
-        neighbors[1][0] = row-1; neighbors[1][1] = col; 
-        neighbors[2][0] = row-1; neighbors[2][1] = col+1; 
-        neighbors[3][0] = row; neighbors[3][1] = col-1; 
-        neighbors[4][0] = row; neighbors[4][1] = col+1; 
-        neighbors[5][0] = row+1; neighbors[5][1] = col-1; 
-        neighbors[6][0] = row+1; neighbors[6][1] = col; 
-        neighbors[7][0] = row+1; neighbors[7][1] = col+1; 
+        neighborsCoords[0][0] = row-1; neighborsCoords[0][1] = col-1; 
+        neighborsCoords[1][0] = row-1; neighborsCoords[1][1] = col; 
+        neighborsCoords[2][0] = row-1; neighborsCoords[2][1] = col+1; 
+        neighborsCoords[3][0] = row; neighborsCoords[3][1] = col-1; 
+        neighborsCoords[4][0] = row; neighborsCoords[4][1] = col+1; 
+        neighborsCoords[5][0] = row+1; neighborsCoords[5][1] = col-1; 
+        neighborsCoords[6][0] = row+1; neighborsCoords[6][1] = col; 
+        neighborsCoords[7][0] = row+1; neighborsCoords[7][1] = col+1; 
         
-        for(int _row=0; _row < neighbors.length; _row++){
-            if(col >= 0 && col < columns && row >= 0 && row < rows){ 
-                try{
-                    if(matrix[neighbors[_row][0]][neighbors[_row][1]].isAlive()){
-                        nAliveNeighbors ++;
-                        }
+        for(int i=0; i < neighborsCoords.length; i++){
+            try{
+                if(matrix[neighborsCoords[i][0]][neighborsCoords[i][1]].isAlive()){
+                    count ++;
+                    }
+            }catch(Exception e) {
                 }
-                catch(Exception e) {
-                }
-            }
         }
-        return nAliveNeighbors;
+        return count;
     }
+            
     /**
      * Next generation matrix of a given matrix
      * result of the application of the 4 rules for the Conway's Game of Life
