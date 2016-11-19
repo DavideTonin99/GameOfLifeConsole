@@ -1,8 +1,8 @@
 package gameoflifeconsole;
 
 /**
- * Rappresenta una cella del gioco Game of life
- * 
+ * @author Tonin Davide davide9935@gmail.com
+ * @version 1.0 2016-10-21
  */
 public class Cell {
     private boolean alive;

@@ -1,13 +1,13 @@
 package gameoflifeconsole;
 
 /**
- * Rappresenta una board del Game of life
- * 
+ * @author Tonin Davide davide9935@gmail.com
+ * @version 1.0 2016-10-21
  */
 import java.util.Random;
 
 public class Board {
-    private Cell matrix[][]; 
+    private ExtendedCell matrix[][]; 
     private int rows;
     private int columns;
     /**
@@ -18,12 +18,13 @@ public class Board {
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        matrix = new Cell[rows][columns];
+        matrix = new ExtendedCell[rows][columns];
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < columns; col++) {
-                matrix[row][col] = new Cell(row, col);
+                matrix[row][col] = new ExtendedCell(row, col, 0);
             }
         }
+
     }
     
     /**
@@ -38,6 +39,7 @@ public class Board {
             int yRandom = random.nextInt(rows);
             if (matrix[yRandom][xRandom].isAlive() == false){
                 matrix[yRandom][xRandom].setAlive(true);
+                matrix[yRandom][xRandom].incAge();
                 i++;
             }
         }
@@ -61,16 +63,9 @@ public class Board {
      */
     public int countNeighbors(int row, int col){
         int count = 0;
-        int[][] neighborsCoords = new int[8][2];
-
-        neighborsCoords[0][0] = row-1; neighborsCoords[0][1] = col-1; 
-        neighborsCoords[1][0] = row-1; neighborsCoords[1][1] = col; 
-        neighborsCoords[2][0] = row-1; neighborsCoords[2][1] = col+1; 
-        neighborsCoords[3][0] = row; neighborsCoords[3][1] = col-1; 
-        neighborsCoords[4][0] = row; neighborsCoords[4][1] = col+1; 
-        neighborsCoords[5][0] = row+1; neighborsCoords[5][1] = col-1; 
-        neighborsCoords[6][0] = row+1; neighborsCoords[6][1] = col; 
-        neighborsCoords[7][0] = row+1; neighborsCoords[7][1] = col+1; 
+        int[][] neighborsCoords = {{row-1, col-1}, {row-1, col}, {row-1, col+1},
+                                   {row, col-1}, {row, col+1}, 
+                                   {row+1, col-1}, {row+1, col}, {row+1, col+1}};
         
         for(int i=0; i < neighborsCoords.length; i++){
             try{
@@ -88,19 +83,19 @@ public class Board {
      * result of the application of the 4 rules for the Conway's Game of Life
      * @return nextMatrix the next matrix
      */
-    public Cell[][] transition(){
+    public ExtendedCell[][] transition(){
         int neighbors;
-        Cell[][] nextMatrix;
-        nextMatrix = new Cell[rows][columns];
+        ExtendedCell[][] nextMatrix;
+        nextMatrix = new ExtendedCell[rows][columns];
         
         // creates new matrix equal to the first
         for(int row=0; row<rows;row++){
             for(int col=0;col<columns;col++){
-                nextMatrix[row][col] = new Cell(row, col);
+                nextMatrix[row][col] = new ExtendedCell(row, col, matrix[row][col].getAge());
                 nextMatrix[row][col].setAlive(matrix[row][col].isAlive()); 
             }
         }
-        
+       
         for(int row=0; row<rows;row++){
             for(int col=0; col<columns;col++){
                 neighbors = countNeighbors(row, col);
@@ -113,7 +108,7 @@ public class Board {
             }
         }
         
-        if(matrixesAreEqual(matrix, nextMatrix)) System.exit(0);
+        if(CellsAge(matrix, nextMatrix)) System.exit(0);
         return nextMatrix;   
     }
     
@@ -137,20 +132,30 @@ public class Board {
      * @param nextMatrix the next step matrix
      * @return end end of the game
      */
-    public boolean matrixesAreEqual(Cell[][] matrix, Cell[][] nextMatrix){
-        boolean end = true;
+    public boolean CellsAge(ExtendedCell[][] matrix, ExtendedCell[][] nextMatrix){
+        //check if the old matrix and the new matrix are equals
+        boolean equals = true;
         for(int row=0; row<rows;){
             for(int col=0; col<columns;){
+                //set the age of cells
+                if(nextMatrix[row][col].isAlive()){
+                    nextMatrix[row][col].incAge();
+                }
+                else{
+                    if(matrix[row][col].isAlive()){
+                        nextMatrix[row][col].reset();
+                    }
+                }
                 if(nextMatrix[row][col].isAlive() != matrix[row][col].isAlive()){
-                    end = false;
-                    row = rows;
-                    col = columns;
+                    equals = false;
+                    //row = rows;
+                    //col = columns;
                 }
                 col++;
             }
             row++;
         }
-        return end;
+        return equals;
     }
     /**
      * Return the board
@@ -161,7 +166,7 @@ public class Board {
         
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < columns; col++) {
-                b += (matrix[row][col].isAlive()) ? "#" : "°";
+                b += (matrix[row][col].isAlive()) ? matrix[row][col].getAge() : "°";
                 b += " ";
             } 
             b += "\n";
